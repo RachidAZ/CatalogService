@@ -27,12 +27,16 @@ public class RepositoryProduct : IRepository<Product, int>
 
     public void Delete(int entity)
     {
-        var product = _dbcontext.Products.FirstOrDefault(x=>x.Id == entity);
+        var product = _dbcontext.Products.Find(entity);   //.FirstOrDefault(x=>x.Id == entity);
         if (product != null)
         {
             _dbcontext.Products.Remove(product);
             _dbcontext.SaveChanges();
 
+        }
+        else
+        {
+            throw new Exception("Product not found");
         }
 
 
@@ -46,7 +50,7 @@ public class RepositoryProduct : IRepository<Product, int>
 
     public Product GetByKey(int id)
     {
-        return _dbcontext.Products.FirstOrDefault(x => x.Id == id);
+        return _dbcontext.Products.Find(id);
     }
 
     public void Update(Product entity)

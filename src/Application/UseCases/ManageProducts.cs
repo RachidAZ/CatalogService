@@ -38,15 +38,15 @@ public class ManageProducts : IProductService
 
     }
 
-    public Result<Product> DeleteProduct(int productId)
+    public Result<bool> DeleteProduct(int productId)
     {
 
         var product=_productsRepository.GetByKey(productId);
         if (product is null)
-            return Result<Product>.Failure("Product Unfound");
+            return Result<bool>.Failure("Product Unfound");
 
         _productsRepository.Delete(productId);
-        return Result<Product>.Success(product);
+        return Result<bool>.Success(true);
     }
 
     public Result<IList<Product>> GetAllProducts()

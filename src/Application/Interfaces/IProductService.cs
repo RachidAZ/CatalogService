@@ -15,7 +15,7 @@ public interface IProductService
     Result<IList<Product>> GetAllProducts();
     Result<Product> AddProduct(Product product);
     Result<Product> UpdateProduct(Product product);
-    Result<Product> DeleteProduct(int productId);
+    Result<bool> DeleteProduct(int productId);
 
 
 
