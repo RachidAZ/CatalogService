@@ -3,7 +3,7 @@ using Application.UseCases;
 using Domain.Entities;
 using Moq;
 
-namespace CatalogService.IntegrationTests;
+namespace CatalogService.UnitTests;
 
 public class ProductServiceTest
 {

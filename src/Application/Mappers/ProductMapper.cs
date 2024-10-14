@@ -36,9 +36,9 @@ public static class ProductMapper
             Description= product.Description,
             Amount= product.Amount,
             CategoryId = product.Category?.Id,
-            Price=product.Price.Price,
+            Price=product.Price?.Price ?? 0,
             Image= product.Image,   
-            Currency = product.Price.Currency,
+            Currency = product.Price?.Currency ?? 0,
 
         };
     }

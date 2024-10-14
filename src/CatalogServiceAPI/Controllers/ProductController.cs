@@ -29,12 +29,16 @@ public class ProductController : ControllerBase
             return  BadRequest(products.ErrorMessage);
     }
 
-    [HttpGet("GetProduct")]
-    public ProductDto GetProduct(int id)
+    [HttpGet("GetProduct/{id}")]
+    public ActionResult<ProductDto> GetProduct(int id)
     {
 
         var product= productService.GetProduct(id).Value;
-        return ProductMapper.ToDto(product);
+        if(product is null)
+            return BadRequest();
+        else
+        return Ok(ProductMapper.ToDto(product));
+
 
     }
 
