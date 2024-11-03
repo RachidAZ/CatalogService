@@ -1,5 +1,5 @@
-﻿using Application.Interfaces;
-using Application.UseCases;
+﻿using Application.Services.Interfaces;
+using Application.Services.Implementation;
 using Domain.Entities;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System;

@@ -2,7 +2,7 @@
 
 namespace Application;
 
-public static class DependencyInjectioncs
+public static class ApplicationSetup
 {
 
     //public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)

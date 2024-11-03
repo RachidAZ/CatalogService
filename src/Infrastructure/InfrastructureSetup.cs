@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,11 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity.SqlServerCompact;
 using Microsoft.EntityFrameworkCore;
+using Application.Services.Interfaces;
 
 
 namespace Infrastructure;
 
-public static class DependencyInjectioncs
+public static class InfrastructureSetup
 {
 
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)

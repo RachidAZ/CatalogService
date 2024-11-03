@@ -1,5 +1,5 @@
 ﻿using Application.Common;
-using Application.Interfaces;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.UseCases;
+namespace Application.Services.Implementation;
 
 public class ManageProducts : IProductService
 {
@@ -17,7 +17,7 @@ public class ManageProducts : IProductService
 
     public ManageProducts(IRepository<Product, int> repository)
     {
-        this._productsRepository = repository;
+        _productsRepository = repository;
     }
 
     public Result<Product> AddProduct(Product product)
@@ -41,7 +41,7 @@ public class ManageProducts : IProductService
     public Result<bool> DeleteProduct(int productId)
     {
 
-        var product=_productsRepository.GetByKey(productId);
+        var product = _productsRepository.GetByKey(productId);
         if (product is null)
             return Result<bool>.Failure("Product Unfound");
 
@@ -53,8 +53,8 @@ public class ManageProducts : IProductService
     {
         try
         {
-            
-            return Result< IList<Product>>.Success(_productsRepository.GetAll().ToList());
+
+            return Result<IList<Product>>.Success(_productsRepository.GetAll().ToList());
 
         }
         catch (Exception ex)
@@ -66,9 +66,10 @@ public class ManageProducts : IProductService
 
     public Result<Product> GetProduct(int id)
     {
-        try { 
-        var product = _productsRepository.GetByKey(id);
-        return Result<Product>.Success(product);
+        try
+        {
+            var product = _productsRepository.GetByKey(id);
+            return Result<Product>.Success(product);
         }
         catch (Exception ex)
         {
@@ -86,7 +87,7 @@ public class ManageProducts : IProductService
             _productsRepository.Update(product);
             return Result<Product>.Success(product);
         }
-         
+
         catch (Exception ex)
         {
 

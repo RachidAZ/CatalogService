@@ -1,5 +1,5 @@
 ﻿using Application.Common;
-using Application.Interfaces;
+using Application.Services.Interfaces;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,16 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.UseCases;
+namespace Application.Services.Implementation;
 
 public class ManageCategories : ICategoryService
 {
 
-    private readonly IRepository<Category,int> _repository;
+    private readonly IRepository<Category, int> _repository;
 
-    public ManageCategories(IRepository<Category,int> categoryService)
+    public ManageCategories(IRepository<Category, int> categoryService)
     {
-          this._repository = categoryService;
+        _repository = categoryService;
     }
     public Result<Category> AddCategory(Category category)
     {

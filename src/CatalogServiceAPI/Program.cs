@@ -1,5 +1,5 @@
-using Application.Interfaces;
-using Application.UseCases;
+using Application.Services.Implementation;
+using Application.Services.Interfaces;
 using Infrastructure;
 using Infrastructure.Persistence;
 using System;

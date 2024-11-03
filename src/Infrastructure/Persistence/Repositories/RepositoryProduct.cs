@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Services.Interfaces;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ public class RepositoryProduct : IRepository<Product, int>
 
     }
 
-    public IEnumerable<Product> GetAll()
+    public IEnumerable<Product> GetAll( )
     {
         return _dbcontext.Products.ToList();
 

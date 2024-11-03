@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces;
+namespace Application.Services.Interfaces;
 
 public interface ICatalogService : IProductService, ICategoryService
 {
 
- 
+
 
 
 
