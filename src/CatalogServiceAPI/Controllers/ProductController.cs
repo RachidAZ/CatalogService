@@ -3,6 +3,10 @@ using Application.Services.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Web.Http;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace CatalogServiceAPI.Controllers;
 
@@ -27,6 +31,16 @@ public class ProductController : ControllerBase
             return Ok(productService.GetAllProducts().Value);
         else
             return  BadRequest(products.ErrorMessage);
+    }
+
+    [HttpGet("GetListProductsPagination")]
+    public ActionResult<IEnumerable<ProductDto>> GetListProducts([FromUri] int page = 1, [FromUri] int nbrRecords = 10)
+    {
+        var products = productService.GetAllProducts(page, nbrRecords);
+        if (products.IsSuccess)
+            return Ok(products.Value);
+        else
+            return BadRequest(products.ErrorMessage);
     }
 
     [HttpGet("GetProduct/{id}")]

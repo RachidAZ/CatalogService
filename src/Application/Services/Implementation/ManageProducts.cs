@@ -63,6 +63,21 @@ public class ManageProducts : IProductService
             return Result<IList<Product>>.Failure(ex.Message);
         }
     }
+    public Result<IList<Product>> GetAllProducts(int page, int nbrRecords)
+    {
+        try
+        {
+            //var products= _productsRepository.GetAll().Skip((page -1) * nbrRecords).Take(nbrRecords).ToList();
+            var products= _productsRepository.GetAll(page, nbrRecords).ToList();
+            return Result<IList<Product>>.Success(products);
+
+        }
+        catch (Exception ex)
+        {
+
+            return Result<IList<Product>>.Failure(ex.Message);
+        }
+    }
 
     public Result<Product> GetProduct(int id)
     {

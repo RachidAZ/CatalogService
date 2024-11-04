@@ -48,6 +48,11 @@ public class RepositoryProduct : IRepository<Product, int>
 
     }
 
+    public IEnumerable<Product> GetAll(int page, int nbrRerords)
+    {
+        return _dbcontext.Products.Skip((page - 1) * nbrRerords).Take(nbrRerords);
+    }
+
     public Product GetByKey(int id)
     {
         return _dbcontext.Products.Find(id);

@@ -13,6 +13,7 @@ public interface IProductService
 
     Result<Product> GetProduct(int id);
     Result<IList<Product>> GetAllProducts();
+    Result<IList<Product>> GetAllProducts(int page, int nbrRecords);
     Result<Product> AddProduct(Product product);
     Result<Product> UpdateProduct(Product product);
     Result<bool> DeleteProduct(int productId);

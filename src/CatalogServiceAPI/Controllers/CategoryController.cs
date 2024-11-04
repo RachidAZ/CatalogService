@@ -1,6 +1,8 @@
+using Application.Mappers;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace CatalogServiceAPI.Controllers;
 
@@ -34,10 +36,20 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost("AddCategory")]
-    public ActionResult AddCategorys(Category category)
+    public ActionResult AddCategory(CategoryDto category)
     {
-        categoryService.AddCategory(category);
+
+        // or update infra so that we modify the parent category explicitly?
+
+        Category parentCategory= null;
+        if (category.CategoryParentId is not null) {
+            parentCategory = categoryService.GetCategory((int)category.CategoryParentId).Value;
+            }
+        var res =categoryService.AddCategory(CategoryMapper.ToEntity(category, parentCategory));
+        if (res.IsSuccess)
         return Ok();
+        else 
+            return BadRequest(res);    
 
     }
 
@@ -50,10 +62,20 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost("UpdateCategory")]
-    public ActionResult UpdateCategory(Category category)
+    public ActionResult UpdateCategory([System.Web.Http.FromUri] int categoryId, CategoryDto category)
     {
-        categoryService.UpdateCategory(category);
-        return Ok();
+        Category parentCategory = null;
+        if (category.CategoryParentId is not null)
+        {
+            parentCategory = categoryService.GetCategory((int)category.CategoryParentId).Value;
+        }
+
+        var cat= CategoryMapper.ToEntity(category, parentCategory);
+        var res = categoryService.UpdateCategory(cat);
+        if (res.IsSuccess)
+            return Ok();
+        else
+            return BadRequest(res);
 
     }
 }

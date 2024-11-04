@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.Mappers;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using System;
@@ -13,6 +14,7 @@ public class ManageCategories : ICategoryService
 {
 
     private readonly IRepository<Category, int> _repository;
+    private readonly IRepository<Product, int> _repositoryProducts;
 
     public ManageCategories(IRepository<Category, int> categoryService)
     {
@@ -24,7 +26,7 @@ public class ManageCategories : ICategoryService
         {
 
             _repository.Add(category);
-            return Result<Category>.Success(category);
+            return Result<Category>.Success(null);
 
         }
         catch (Exception ex)
@@ -36,23 +38,39 @@ public class ManageCategories : ICategoryService
 
     }
 
-    public Result<Category> DeleteCategory(int categoryId)
+    public Result<int> DeleteCategory(int categoryId)
     {
-        throw new NotImplementedException();
+        _repository.Delete(categoryId);
+
+        var productsOfCategory=_repositoryProducts.GetAll().Where(p => p.Category.Id == categoryId);
+        foreach(var product in productsOfCategory)
+        {
+            _repositoryProducts.Delete(product.Id);
+        }
+
+        return Result<int>.Success(categoryId);
+
+
     }
 
     public Result<IList<Category>> GetAllCategories()
     {
-        throw new NotImplementedException();
+        return Result<IList<Category>>.Success(_repository.GetAll().ToList());
+    }
+
+    public Result<IList<Category>> GetAllCategories(int page, int nbrRecords)
+    {
+       return Result<IList<Category>>.Success(_repository.GetAll(page, nbrRecords).ToList());
     }
 
     public Result<Category> GetCategory(int id)
     {
-        throw new NotImplementedException();
+        return Result<Category>.Success(_repository.GetByKey(id));
     }
 
-    public Result<Category> UpdateCategory(Category category)
+    public Result<int> UpdateCategory(Category category)
     {
-        throw new NotImplementedException();
+        _repository.Update(category);
+        return Result<int>.Success(category.Id);
     }
 }

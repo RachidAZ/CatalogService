@@ -1,4 +1,5 @@
 ﻿using Application.Services.Interfaces;
+using Azure;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -23,23 +24,37 @@ public class RepositoryCategory : IRepository<Category, int>
 
     }
 
-    public void Delete(int entity)
+    public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var category = _dbcontext.Categories.Find(id);
+
+        if (category is null)
+            throw new Exception("category unfound");
+
+        _dbcontext.Remove(category);
+
+        _dbcontext.SaveChanges();
+
     }
 
     public IEnumerable<Category> GetAll()
     {
-        throw new NotImplementedException();
+        return _dbcontext.Categories;
+    }
+
+    public IEnumerable<Category> GetAll(int page, int nbrRerords)
+    {
+        return _dbcontext.Categories.Skip((page - 1) * nbrRerords).Take(nbrRerords);  
     }
 
     public Category GetByKey(int id)
     {
-        throw new NotImplementedException();
+        return _dbcontext.Categories.Find(id); 
     }
 
     public void Update(Category entity)
     {
-        throw new NotImplementedException();
+        _dbcontext.Update(entity);
+        _dbcontext.SaveChanges();
     }
 }
