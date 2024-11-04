@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Web.Http;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using HttpPutAttribute = Microsoft.AspNetCore.Mvc.HttpPutAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace CatalogServiceAPI.Controllers;
@@ -73,7 +74,7 @@ public class ProductController : ControllerBase
 
     }
 
-    [HttpPost("UpdateProduct")]
+    [HttpPut("UpdateProduct")]
     public ActionResult UpdateProduct(ProductUpdateDto product)
     {
         productService.UpdateProduct(ProductMapper.ToEntity(product));

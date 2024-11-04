@@ -10,22 +10,31 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Implementation;
 
-public class ManageCategories : ICategoryService
+public class CategoriesService : ICategoryService
 {
 
     private readonly IRepository<Category, int> _repository;
     private readonly IRepository<Product, int> _repositoryProducts;
 
-    public ManageCategories(IRepository<Category, int> categoryService)
+    public CategoriesService(IRepository<Category, int> categoryService)
     {
         _repository = categoryService;
     }
-    public Result<Category> AddCategory(Category category)
+    public Result<Category> AddCategory(CategoryDto category)
     {
         try
         {
+            Category parentCategory = null;
+            if (category.CategoryParentId.HasValue)
+            {
+                parentCategory = GetCategory((int)category.CategoryParentId).Value;
+                
+                if (parentCategory is null)
+                    return Result<Category>.Failure("Parent Category not found");
 
-            _repository.Add(category);
+            }
+            var cat = CategoryMapper.ToEntity(category, parentCategory);
+            _repository.Add(cat);
             return Result<Category>.Success(null);
 
         }
@@ -68,9 +77,29 @@ public class ManageCategories : ICategoryService
         return Result<Category>.Success(_repository.GetByKey(id));
     }
 
-    public Result<int> UpdateCategory(Category category)
+    public Result<int> UpdateCategory(int categoryId, CategoryDto category)
     {
-        _repository.Update(category);
-        return Result<int>.Success(category.Id);
+
+        var catToUpdate = GetCategory(categoryId).Value;
+
+        if (catToUpdate is null)
+            return Result<int>.Failure("Category not found");
+
+        catToUpdate.Name = category.Name ?? catToUpdate.Name;
+        catToUpdate.Image = category.Image ?? catToUpdate.Image;
+
+
+        Category parentCategory = null;
+        if (category.CategoryParentId.HasValue)
+        {
+            parentCategory = GetCategory((int)category.CategoryParentId).Value;
+            if (parentCategory is null)
+                return Result<int>.Failure("Parent Category not found");
+
+            catToUpdate.CategoryParent = parentCategory;
+        }
+
+        _repository.Update(catToUpdate);
+        return Result<int>.Success(catToUpdate.Id);
     }
 }

@@ -17,8 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("CatalogConnectionString"));
 
 // Add Appliation services (put this inside extension)
-builder.Services.AddScoped<IProductService, ManageProducts>();
-builder.Services.AddScoped<ICategoryService, ManageCategories>();
+builder.Services.AddScoped<IProductService, ProductsServices>();
+builder.Services.AddScoped<ICategoryService, CategoriesService>();
 
 
 var app = builder.Build();

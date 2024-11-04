@@ -14,7 +14,7 @@ public class ProductServiceTest
         var repo_mock = new Mock<IRepository<Product, int>>();
         repo_mock.Setup(m=> m.Delete(It.IsAny<int>())).Throws<Exception>();
 
-        IProductService productService = new ManageProducts(repo_mock.Object);
+        IProductService productService = new ProductsServices(repo_mock.Object);
 
 
         //Act
@@ -35,7 +35,7 @@ public class ProductServiceTest
         var repo_mock = new Mock<IRepository<Product, int>>();
         repo_mock.Setup(m => m.GetByKey(It.IsAny<int>())).Returns(new Product());
 
-        IProductService productService = new ManageProducts(repo_mock.Object);
+        IProductService productService = new ProductsServices(repo_mock.Object);
 
 
         //Act

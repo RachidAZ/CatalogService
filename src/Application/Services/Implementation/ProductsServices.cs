@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Implementation;
 
-public class ManageProducts : IProductService
+public class ProductsServices : IProductService
 {
 
 
     private readonly IRepository<Product, int> _productsRepository;
 
-    public ManageProducts(IRepository<Product, int> repository)
+    public ProductsServices(IRepository<Product, int> repository)
     {
         _productsRepository = repository;
     }

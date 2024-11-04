@@ -14,8 +14,8 @@ public interface ICategoryService
     Result<Category> GetCategory(int id);
     Result<IList<Category>> GetAllCategories();
     Result<IList<Category>> GetAllCategories(int page, int nbrRecords);
-    Result<Category> AddCategory(Category category);
-    Result<int> UpdateCategory(Category category);
+    Result<Category> AddCategory(CategoryDto category);
+    Result<int> UpdateCategory(int categoryId, CategoryDto category);
     Result<int> DeleteCategory(int categoryId);
 
 

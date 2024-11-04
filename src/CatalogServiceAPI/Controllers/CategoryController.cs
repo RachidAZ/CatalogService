@@ -19,7 +19,7 @@ public class CategoryController : ControllerBase
         this.categoryService = categoryService;
     }
 
-    [HttpGet( "GetListCategorys")]
+    [HttpGet( "GetListCategories")]
     public IEnumerable<Category> GetListCategorys()
     {
 
@@ -39,13 +39,7 @@ public class CategoryController : ControllerBase
     public ActionResult AddCategory(CategoryDto category)
     {
 
-        // or update infra so that we modify the parent category explicitly?
-
-        Category parentCategory= null;
-        if (category.CategoryParentId is not null) {
-            parentCategory = categoryService.GetCategory((int)category.CategoryParentId).Value;
-            }
-        var res =categoryService.AddCategory(CategoryMapper.ToEntity(category, parentCategory));
+        var res =categoryService.AddCategory(category);
         if (res.IsSuccess)
         return Ok();
         else 
@@ -61,17 +55,11 @@ public class CategoryController : ControllerBase
 
     }
 
-    [HttpPost("UpdateCategory")]
+    [HttpPut("UpdateCategory")]
     public ActionResult UpdateCategory([System.Web.Http.FromUri] int categoryId, CategoryDto category)
     {
-        Category parentCategory = null;
-        if (category.CategoryParentId is not null)
-        {
-            parentCategory = categoryService.GetCategory((int)category.CategoryParentId).Value;
-        }
 
-        var cat= CategoryMapper.ToEntity(category, parentCategory);
-        var res = categoryService.UpdateCategory(cat);
+        var res = categoryService.UpdateCategory(categoryId, category);
         if (res.IsSuccess)
             return Ok();
         else
