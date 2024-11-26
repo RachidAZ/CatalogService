@@ -13,9 +13,9 @@ public class ProductsServices : IProductService
 {
 
 
-    private readonly IRepository<Product, int> _productsRepository;
+    private readonly IRepositoryProduct _productsRepository;
 
-    public ProductsServices(IRepository<Product, int> repository)
+    public ProductsServices(IRepositoryProduct repository)
     {
         _productsRepository = repository;
     }

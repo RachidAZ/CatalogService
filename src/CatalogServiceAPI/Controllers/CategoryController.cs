@@ -19,24 +19,24 @@ public class CategoryController : ControllerBase
         this.categoryService = categoryService;
     }
 
-    [HttpGet( "GetListCategories")]
-    public IEnumerable<Category> GetListCategorys()
+    [HttpGet( "")]
+    public IEnumerable<Category> List()
     {
 
         return categoryService.GetAllCategories().Value;
 
     }
 
-    [HttpGet("GetCategory")]
-    public Category GetCategorys(int id)
+    [HttpGet("{id}")]
+    public Category Get(int id)
     {
 
         return categoryService.GetCategory(id).Value;
 
     }
 
-    [HttpPost("AddCategory")]
-    public ActionResult AddCategory(CategoryDto category)
+    [HttpPost("/")]
+    public ActionResult Create(CategoryDto category)
     {
 
         var res =categoryService.AddCategory(category);
@@ -47,7 +47,7 @@ public class CategoryController : ControllerBase
 
     }
 
-    [HttpPost("DeleteCategory")]
+    [HttpDelete("/")]
     public ActionResult DeleteCategory(int categoryId)
     {
         categoryService.DeleteCategory(categoryId);
@@ -55,7 +55,7 @@ public class CategoryController : ControllerBase
 
     }
 
-    [HttpPut("UpdateCategory")]
+    [HttpPut("/")]
     public ActionResult UpdateCategory([System.Web.Http.FromUri] int categoryId, CategoryDto category)
     {
 

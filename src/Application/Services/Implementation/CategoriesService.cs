@@ -3,7 +3,6 @@ using Application.Mappers;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ public class CategoriesService : ICategoryService
 {
 
     private readonly IRepository<Category, int> _repository;
-    private readonly IRepository<Product, int> _repositoryProducts;
+    private readonly IRepositoryProduct _repositoryProducts;
 
     public CategoriesService(IRepository<Category, int> categoryService)
     {
@@ -51,11 +50,7 @@ public class CategoriesService : ICategoryService
     {
         _repository.Delete(categoryId);
 
-        var productsOfCategory=_repositoryProducts.GetAll().Where(p => p.Category.Id == categoryId);
-        foreach(var product in productsOfCategory)
-        {
-            _repositoryProducts.Delete(product.Id);
-        }
+        _repositoryProducts.DeleteByCategoryId(categoryId);
 
         return Result<int>.Success(categoryId);
 

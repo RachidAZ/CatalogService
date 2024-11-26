@@ -23,7 +23,7 @@ public static class InfrastructureSetup
         services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString));
         
-        services.AddScoped<IRepository<Product, int> , RepositoryProduct>();
+        services.AddScoped<IRepositoryProduct , RepositoryProduct>();
         services.AddScoped<IRepository<Category, int> , RepositoryCategory>();
         
 
