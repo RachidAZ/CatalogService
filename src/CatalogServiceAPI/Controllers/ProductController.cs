@@ -61,8 +61,13 @@ public class ProductController : ControllerBase
     public ActionResult AddProducts(ProductDto productDto)
     {
 
-        productService.AddProduct(ProductMapper.ToEntity(productDto));
-        return Ok();
+        var res=productService.AddProduct(ProductMapper.ToEntity(productDto));
+        if(res.IsSuccess)
+            return Ok();
+        else
+        {
+            return BadRequest(res.ErrorMessage);
+        }
 
     }
 

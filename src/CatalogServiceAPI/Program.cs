@@ -1,3 +1,4 @@
+using Application.Common.EventHandlers;
 using Application.Services.Implementation;
 using Application.Services.Interfaces;
 using Infrastructure;
@@ -19,6 +20,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionSt
 // Add Appliation services (put this inside extension)
 builder.Services.AddScoped<IProductService, ProductsServices>();
 builder.Services.AddScoped<ICategoryService, CategoriesService>();
+builder.Services.AddScoped<ProductPropertyUpdatedEventHandler>();
 
 
 var app = builder.Build();

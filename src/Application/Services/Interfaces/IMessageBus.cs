@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Services.Interfaces;
+
+public interface IMessageBus
+{
+
+    Task PublishAsync(string topicOrQueueName, object message);
+    Task SubscribeAsync<T>(string topicOrQueueName, Func<T, Task> onMessageReceived);
+}
