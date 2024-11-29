@@ -4,6 +4,7 @@ using Application.Services.Interfaces;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
@@ -25,20 +26,63 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.Authority = "https://localhost:5001";
         options.TokenValidationParameters.ValidateAudience = false;
 
-        //options.TokenValidationParameters = new TokenValidationParameters
-        //{
-        //    ValidateIssuer = true, // Validate the issuer
-        //    ValidateAudience = true, // Validate the audience
-        //    ValidateLifetime = true, // Ensure token hasn't expired
-        //    ValidateIssuerSigningKey = true, // Ensure token signature is valid
-        //    ValidIssuer = "https://localhost:5001", // Set your valid issuer
-        //    ValidAudience = "https://localhost:5001/resources", // Set your valid audience
-        //    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) // Set your signing key
-        //};
-    });
+
+        // log authentication outcome
+        options.Events = new JwtBearerEvents
+        {
+
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                var claims = context.Principal.Claims;
+
+                // Log claims
+                foreach (var claim in claims)
+                {
+                    Console.WriteLine($"JWT details-->  {claim.Type}: {claim.Value}");
+                }
+
+                context.Response.StatusCode = 401;
+                context.Response.ContentType = "application/json";
+                return context.Response.WriteAsync($"Authentication failed: {context.Exception.Message}");
+
+                
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("Token validated successfully.");
+                var claims = context.Principal.Claims;
+
+                // Log claims
+                foreach (var claim in claims)
+                {
+                    Console.WriteLine($"JWT details--> {claim.Type}: {claim.Value}");
+                }
+                return Task.CompletedTask;
+            }
+        };
+
+
+    }
+
+
+   
+    
+    );
 
 // Add Authorization
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ReadPolicy", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => c.Type == "scope" && c.Value.Split(' ').Contains("Store.Read"))
+        ));
+
+    options.AddPolicy("WritePolicy", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => c.Type == "scope" && c.Value.Split(' ').Contains("Store.Manage"))
+        ));
+});
 
 
 // Add Infra services

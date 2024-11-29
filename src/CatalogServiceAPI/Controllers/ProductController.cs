@@ -25,7 +25,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet( "GetListProducts")]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Microsoft.AspNetCore.Authorization.Authorize(Policy = "ReadPolicy")]
     public ActionResult<IEnumerable<ProductDto>> GetListProducts()
     {
         var products = productService.GetAllProducts();
@@ -59,6 +59,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost("AddProduct")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Policy = "WritePolicy")]
     public ActionResult AddProducts(ProductDto productDto)
     {
 
