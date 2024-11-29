@@ -12,9 +12,10 @@ public class ProductServiceTest
     {
         // Arrange
         var repo_mock = new Mock<IRepositoryProduct>();
+        var categoryService_mock = new Mock<ICategoryService>();
         repo_mock.Setup(m=> m.Delete(It.IsAny<int>())).Throws<Exception>();
         var eventHandler = new Application.Common.EventHandlers.ProductPropertyUpdatedEventHandler(null);
-        IProductService productService = new ProductsServices(repo_mock.Object, eventHandler);
+        IProductService productService = new ProductsServices(repo_mock.Object, eventHandler, categoryService_mock.Object);
 
 
         //Act
@@ -34,9 +35,9 @@ public class ProductServiceTest
         // Arrange
         var repo_mock = new Mock<IRepositoryProduct>();
         repo_mock.Setup(m => m.GetByKey(It.IsAny<int>())).Returns(new Product());
-
+        var categoryService_mock = new Mock<ICategoryService>();
         var eventHandler = new Application.Common.EventHandlers.ProductPropertyUpdatedEventHandler(null);
-        IProductService productService = new ProductsServices(repo_mock.Object, eventHandler);
+        IProductService productService = new ProductsServices(repo_mock.Object, eventHandler, categoryService_mock.Object);
 
 
         //Act

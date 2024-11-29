@@ -25,6 +25,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet( "GetListProducts")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public ActionResult<IEnumerable<ProductDto>> GetListProducts()
     {
         var products = productService.GetAllProducts();

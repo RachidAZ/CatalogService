@@ -3,7 +3,10 @@ using Application.Services.Implementation;
 using Application.Services.Interfaces;
 using Infrastructure;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,30 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// Add Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:5001";
+        options.TokenValidationParameters.ValidateAudience = false;
+
+        //options.TokenValidationParameters = new TokenValidationParameters
+        //{
+        //    ValidateIssuer = true, // Validate the issuer
+        //    ValidateAudience = true, // Validate the audience
+        //    ValidateLifetime = true, // Ensure token hasn't expired
+        //    ValidateIssuerSigningKey = true, // Ensure token signature is valid
+        //    ValidIssuer = "https://localhost:5001", // Set your valid issuer
+        //    ValidAudience = "https://localhost:5001/resources", // Set your valid audience
+        //    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) // Set your signing key
+        //};
+    });
+
+// Add Authorization
+builder.Services.AddAuthorization();
+
 
 // Add Infra services
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("CatalogConnectionString"));
@@ -24,6 +51,9 @@ builder.Services.AddScoped<ProductPropertyUpdatedEventHandler>();
 
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 // Ensure the database is created or migrated - move to migrations once issue fixed
