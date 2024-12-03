@@ -62,7 +62,7 @@ public class ProductController : ControllerBase
     [Microsoft.AspNetCore.Authorization.Authorize(Policy = "WritePolicy")]
     public ActionResult AddProducts(ProductDto productDto)
     {
-
+        //todo mapping should be inside service
         var res=productService.AddProduct(ProductMapper.ToEntity(productDto));
         if(res.IsSuccess)
             return Ok();

@@ -106,13 +106,13 @@ public class ProductsServices : IProductService
     {
         try
         {
-
+            // todo: use await async pattern
             _productsRepository.Update(product);
 
             var updateEvent=new ProductPropertyUpdatedEvent
                 (product.Id,product.Name, product.Description, product.Category.Id, product.Price, product.Amount);
              _productPropertyUpdatedEventHandler.Handle(updateEvent).Wait();
-
+            // todo: use IMediatr instead of custom event handler
             return Result<Product>.Success(product);
         }
 
