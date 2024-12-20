@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CatalogService.IntegrationTests;
 
-public class ProductServiceIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>> , IAsyncLifetime
+public class ProductServiceIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>>, IAsyncLifetime
 {
 
     private readonly HttpClient _client;
@@ -46,16 +46,16 @@ public class ProductServiceIntegrationTest : IClassFixture<CustomWebApplicationF
         {
             try
             {
-                for(int i=1; i<=nbrProduct; i++)
+                for (int i = 1; i <= nbrProduct; i++)
                 {
 
 
-                
-                _dbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products ON");
-                _dbContext.Products.Add(new Product() { Id = i, Name = "testpr" });
-                _dbContext.SaveChanges();
-                _dbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products OFF");
-                
+
+                    _dbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products ON");
+                    _dbContext.Products.Add(new Product() { Id = i, Name = "testpr" });
+                    _dbContext.SaveChanges();
+                    _dbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Products OFF");
+
 
                 }
                 transaction.Commit();
@@ -70,7 +70,7 @@ public class ProductServiceIntegrationTest : IClassFixture<CustomWebApplicationF
                 throw;
             }
         }
-        }
+    }
 
 
 

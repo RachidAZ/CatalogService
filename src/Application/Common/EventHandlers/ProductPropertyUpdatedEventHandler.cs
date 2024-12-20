@@ -1,10 +1,10 @@
-﻿using Application.Common.Events;
-using Application.Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Common.Events;
+using Application.Services.Interfaces;
 
 
 namespace Application.Common.EventHandlers;
@@ -19,9 +19,10 @@ public class ProductPropertyUpdatedEventHandler
         this._messageBus = messageBus;
     }
 
-    public  async Task Handle(ProductPropertyUpdatedEvent @event){
+    public async Task Handle(ProductPropertyUpdatedEvent @event)
+    {
 
-        await _messageBus.PublishAsync("catalog",@event);
+        await _messageBus.PublishAsync("catalog", @event);
 
 
     }

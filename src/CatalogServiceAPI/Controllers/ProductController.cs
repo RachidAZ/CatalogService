@@ -1,9 +1,9 @@
+using System.Web.Http;
 using Application.Mappers;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Web.Http;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using HttpPutAttribute = Microsoft.AspNetCore.Mvc.HttpPutAttribute;
@@ -24,38 +24,19 @@ public class ProductController : ControllerBase
         this.productService = productService;
     }
 
-    [HttpGet( "GetListProducts")]
+    [HttpGet("GetListProducts")]
     [Microsoft.AspNetCore.Authorization.Authorize(Policy = "ReadPolicy")]
     public ActionResult<IEnumerable<ProductDto>> GetListProducts()
     {
-        var products = productService.GetAllProducts();
+        Application.Common.Result<IList<Product>> products = productService.GetAllProducts();
         if (products.IsSuccess)
+        {
             return Ok(productService.GetAllProducts().Value);
+        }
         else
-            return  BadRequest(products.ErrorMessage);
-    }
-
-    [HttpGet("GetListProductsPagination")]
-    public ActionResult<IEnumerable<ProductDto>> GetListProducts([FromUri] int page = 1, [FromUri] int nbrRecords = 10)
-    {
-        var products = productService.GetAllProducts(page, nbrRecords);
-        if (products.IsSuccess)
-            return Ok(products.Value);
-        else
+        {
             return BadRequest(products.ErrorMessage);
-    }
-
-    [HttpGet("GetProduct/{id}")]
-    public ActionResult<ProductDto> GetProduct(int id)
-    {
-
-        var product= productService.GetProduct(id).Value;
-        if(product is null)
-            return BadRequest();
-        else
-        return Ok(ProductMapper.ToDto(product));
-
-
+        }
     }
 
     [HttpPost("AddProduct")]
@@ -63,15 +44,48 @@ public class ProductController : ControllerBase
     public ActionResult AddProducts(ProductDto productDto)
     {
         //todo mapping should be inside service
-        var res=productService.AddProduct(ProductMapper.ToEntity(productDto));
-        if(res.IsSuccess)
+        Application.Common.Result<Product> res = productService.AddProduct(ProductMapper.ToEntity(productDto));
+        if (res.IsSuccess)
+        {
             return Ok();
+        }
         else
         {
             return BadRequest(res.ErrorMessage);
         }
 
     }
+
+    [HttpGet("GetListProductsPagination")]
+    public ActionResult<IEnumerable<ProductDto>> GetListProducts([FromUri] int page = 1, [FromUri] int nbrRecords = 10)
+    {
+        Application.Common.Result<IList<Product>> products = productService.GetAllProducts(page, nbrRecords);
+        if (products.IsSuccess)
+        {
+            return Ok(products.Value);
+        }
+        else
+        {
+            return BadRequest(products.ErrorMessage);
+        }
+    }
+
+    [HttpGet("GetProduct/{id}")]
+    public ActionResult<ProductDto> GetProduct(int id)
+    {
+
+        Product product = productService.GetProduct(id).Value;
+        if (product is null)
+        {
+            return BadRequest();
+        }
+        else
+        {
+            return Ok(ProductMapper.ToDto(product));
+        }
+    }
+
+
 
     [HttpPost("DeleteProduct")]
     public ActionResult DeleteProduct(int productId)

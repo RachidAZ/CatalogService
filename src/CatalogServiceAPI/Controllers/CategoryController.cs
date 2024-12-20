@@ -19,7 +19,7 @@ public class CategoryController : ControllerBase
         this.categoryService = categoryService;
     }
 
-    [HttpGet( "")]
+    [HttpGet("")]
     public IEnumerable<Category> List()
     {
 
@@ -39,12 +39,15 @@ public class CategoryController : ControllerBase
     public ActionResult Create(CategoryDto category)
     {
 
-        var res =categoryService.AddCategory(category);
+        Application.Common.Result<Category> res = categoryService.AddCategory(category);
         if (res.IsSuccess)
-        return Ok();
-        else 
-            return BadRequest(res);    
-
+        {
+            return Ok();
+        }
+        else
+        {
+            return BadRequest(res);
+        }
     }
 
     [HttpDelete("/")]
@@ -59,11 +62,14 @@ public class CategoryController : ControllerBase
     public ActionResult UpdateCategory([System.Web.Http.FromUri] int categoryId, CategoryDto category)
     {
 
-        var res = categoryService.UpdateCategory(categoryId, category);
+        Application.Common.Result<int> res = categoryService.UpdateCategory(categoryId, category);
         if (res.IsSuccess)
+        {
             return Ok();
+        }
         else
+        {
             return BadRequest(res);
-
+        }
     }
 }

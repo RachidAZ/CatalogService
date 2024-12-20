@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using Application.Common.EventHandlers;
 using Application.Services.Implementation;
 using Application.Services.Interfaces;
@@ -6,10 +8,8 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -34,10 +34,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnAuthenticationFailed = context =>
             {
                 Console.WriteLine($"Authentication failed: {context.Exception.Message}");
-                var claims = context.Principal.Claims;
+                IEnumerable<System.Security.Claims.Claim> claims = context.Principal.Claims;
 
                 // Log claims
-                foreach (var claim in claims)
+                foreach (System.Security.Claims.Claim claim in claims)
                 {
                     Console.WriteLine($"JWT details-->  {claim.Type}: {claim.Value}");
                 }
@@ -46,15 +46,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 context.Response.ContentType = "application/json";
                 return context.Response.WriteAsync($"Authentication failed: {context.Exception.Message}");
 
-                
+
             },
             OnTokenValidated = context =>
             {
                 Console.WriteLine("Token validated successfully.");
-                var claims = context.Principal.Claims;
+                IEnumerable<System.Security.Claims.Claim> claims = context.Principal.Claims;
 
                 // Log claims
-                foreach (var claim in claims)
+                foreach (System.Security.Claims.Claim claim in claims)
                 {
                     Console.WriteLine($"JWT details--> {claim.Type}: {claim.Value}");
                 }
@@ -66,8 +66,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     }
 
 
-   
-    
+
+
     );
 
 // Add Authorization
@@ -94,17 +94,17 @@ builder.Services.AddScoped<ICategoryService, CategoriesService>();
 builder.Services.AddScoped<ProductPropertyUpdatedEventHandler>();
 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 
 // Ensure the database is created or migrated - move to migrations once issue fixed
-using (var scope = app.Services.CreateScope())
+using (IServiceScope scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();  
+    ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated();
 }
 
 // Configure the HTTP request pipeline.

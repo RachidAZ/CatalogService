@@ -1,12 +1,12 @@
-﻿using Application.Services.Interfaces;
-using Azure;
-using Domain.Entities;
-using System;
+﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Services.Interfaces;
+using Azure;
+using Domain.Entities;
 //using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +17,7 @@ public class RepositoryCategory : IRepository<Category, int>
     private readonly ApplicationDbContext _dbcontext;
     public RepositoryCategory(ApplicationDbContext dbContext)
     {
-         this._dbcontext = dbContext;
+        this._dbcontext = dbContext;
 
     }
     public void Add(Category entity)
@@ -42,7 +42,7 @@ public class RepositoryCategory : IRepository<Category, int>
 
     public IEnumerable<Category> GetAll()
     {
-        var cats= _dbcontext.Categories
+        var cats = _dbcontext.Categories
                             .Include(c => c.CategoryParent)
                             .ToList();
 
@@ -51,14 +51,14 @@ public class RepositoryCategory : IRepository<Category, int>
 
     public IEnumerable<Category> GetAll(int page, int nbrRerords)
     {
-        return _dbcontext.Categories.Skip((page - 1) * nbrRerords).Take(nbrRerords);  
+        return _dbcontext.Categories.Skip((page - 1) * nbrRerords).Take(nbrRerords);
     }
 
     public Category GetByKey(int id)
     {
 
 
-        var cat= _dbcontext.Categories
+        var cat = _dbcontext.Categories
             .Where(c => c.Id == id)
             .Include(c => c.CategoryParent)
             .FirstOrDefault();

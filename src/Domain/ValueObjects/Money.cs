@@ -7,4 +7,3 @@ using System.Threading.Tasks;
 namespace Domain.ValueObjects;
 
 public record Money(long Price, int Currency);
-

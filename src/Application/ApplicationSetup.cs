@@ -1,4 +1,4 @@
-﻿ //using Microsoft.Extensions.DependencyInjection;
+﻿//using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
 
@@ -13,7 +13,7 @@ public static class ApplicationSetup
 
     //    services.AddDbContext<ApplicationDbContext>(options =>
     //    options.use.UseSqlCe());
-        
+
     //    services.AddScoped<IRepository<Product, int> , RepositoryProduct>();
     //    services.AddScoped<IRepository<Category, int> , RepositoryCategory>();
 

@@ -1,11 +1,11 @@
-﻿using Application.Common;
-using Application.Mappers;
-using Application.Services.Interfaces;
-using Domain.Entities;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Common;
+using Application.Mappers;
+using Application.Services.Interfaces;
+using Domain.Entities;
 
 namespace Application.Services.Implementation;
 
@@ -27,7 +27,7 @@ public class CategoriesService : ICategoryService
             if (category.CategoryParentId.HasValue)
             {
                 parentCategory = GetCategory((int)category.CategoryParentId).Value;
-                
+
                 if (parentCategory is null)
                     return Result<Category>.Failure("Parent Category not found");
 
@@ -64,7 +64,7 @@ public class CategoriesService : ICategoryService
 
     public Result<IList<Category>> GetAllCategories(int page, int nbrRecords)
     {
-       return Result<IList<Category>>.Success(_repository.GetAll(page, nbrRecords).ToList());
+        return Result<IList<Category>>.Success(_repository.GetAll(page, nbrRecords).ToList());
     }
 
     public Result<Category> GetCategory(int id)

@@ -1,16 +1,16 @@
-﻿using Application.Services.Interfaces;
-using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Services.Interfaces;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
 
-public class RepositoryProduct :  IRepositoryProduct
+public class RepositoryProduct : IRepositoryProduct
 {
 
     private readonly ApplicationDbContext _dbcontext;
@@ -29,9 +29,9 @@ public class RepositoryProduct :  IRepositoryProduct
 
     public void DeleteByCategoryId(int categoryId)
     {
-        
-            _dbcontext.Products.Where(p=> p.Category.Id == categoryId).ExecuteDelete();
-            _dbcontext.SaveChanges();
+
+        _dbcontext.Products.Where(p => p.Category.Id == categoryId).ExecuteDelete();
+        _dbcontext.SaveChanges();
 
 
     }
@@ -44,7 +44,7 @@ public class RepositoryProduct :  IRepositoryProduct
             _dbcontext.Products.Remove(product);
             _dbcontext.SaveChanges();
 
-           
+
 
         }
         else
@@ -55,7 +55,7 @@ public class RepositoryProduct :  IRepositoryProduct
 
     }
 
-    public IEnumerable<Product> GetAll( )
+    public IEnumerable<Product> GetAll()
     {
         return _dbcontext.Products.ToList();
 

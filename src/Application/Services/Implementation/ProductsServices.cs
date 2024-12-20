@@ -1,13 +1,13 @@
-﻿using Application.Common;
-using Application.Common.EventHandlers;
-using Application.Common.Events;
-using Application.Services.Interfaces;
-using Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Common;
+using Application.Common.EventHandlers;
+using Application.Common.Events;
+using Application.Services.Interfaces;
+using Domain.Entities;
 
 namespace Application.Services.Implementation;
 
@@ -76,7 +76,7 @@ public class ProductsServices : IProductService
         try
         {
             //var products= _productsRepository.GetAll().Skip((page -1) * nbrRecords).Take(nbrRecords).ToList();
-            var products= _productsRepository.GetAll(page, nbrRecords).ToList();
+            var products = _productsRepository.GetAll(page, nbrRecords).ToList();
             return Result<IList<Product>>.Success(products);
 
         }
@@ -109,9 +109,9 @@ public class ProductsServices : IProductService
             // todo: use await async pattern
             _productsRepository.Update(product);
 
-            var updateEvent=new ProductPropertyUpdatedEvent
-                (product.Id,product.Name, product.Description, product.Category.Id, product.Price, product.Amount);
-             _productPropertyUpdatedEventHandler.Handle(updateEvent).Wait();
+            var updateEvent = new ProductPropertyUpdatedEvent
+                (product.Id, product.Name, product.Description, product.Category.Id, product.Price, product.Amount);
+            _productPropertyUpdatedEventHandler.Handle(updateEvent).Wait();
             // todo: use IMediatr instead of custom event handler
             return Result<Product>.Success(product);
         }

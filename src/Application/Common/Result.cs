@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common;
 
-public class Result<T> 
+public class Result<T>
 {
     public T Value { get; }
     public bool IsSuccess { get; }
@@ -15,7 +15,7 @@ public class Result<T>
 
 
     private Result(bool isSuccess, string errorMessage, T value)
-        
+
     {
         Value = value;
         IsSuccess = isSuccess;
@@ -33,4 +33,3 @@ public class Result<T>
         return new Result<T>(false, errorMessage, default);
     }
 }
-
