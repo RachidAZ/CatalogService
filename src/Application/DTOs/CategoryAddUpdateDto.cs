@@ -1,6 +1,7 @@
 ﻿using System;
 using Domain.Entities;
 
+namespace Dto;
 public class CategoryAddUpdateDto
 {
 
