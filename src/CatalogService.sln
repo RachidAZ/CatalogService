@@ -27,6 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.UnitTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.IntegrationTests", "..\tests\CatalogService.IntegrationTests\CatalogService.IntegrationTests.csproj", "{D6F10F58-817A-4043-812D-5584D97D9F33}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CEFB9189-3FA1-4D05-9507-6C11F10E469E}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +77,7 @@ Global
 		{1C79EBB0-DA50-49BF-AC2C-3481574A0F6A} = {E7FB2FBD-A09C-4519-87A9-8C4FD5FAE43F}
 		{6F45F33F-3508-4301-98C3-C2AEF74B5D20} = {DFFB1F4F-CAFE-4928-B45D-6B39687967AA}
 		{D6F10F58-817A-4043-812D-5584D97D9F33} = {DFFB1F4F-CAFE-4928-B45D-6B39687967AA}
+		{CEFB9189-3FA1-4D05-9507-6C11F10E469E} = {7F369EA8-03B8-462B-B7FD-BDDB144FA5A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AE9A5F8-2134-4B5E-93FA-DE948A499F29}
