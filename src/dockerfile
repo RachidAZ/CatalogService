@@ -1,0 +1,48 @@
+# Use the official .NET SDK image to build and publish the application
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the solution file into the container
+COPY ./*.sln ./
+
+# Copy the project files into the container
+COPY ./Application/*.csproj Application/
+COPY ./CatalogServiceAPI/*.csproj CatalogServiceAPI/
+COPY ./Domain/*.csproj Domain/
+COPY ./Infrastructure/*.csproj Infrastructure/
+
+# Restore the dependencies for the project
+RUN dotnet restore CatalogServiceAPI/CatalogServiceAPI.csproj
+
+# Copy all files
+COPY . .
+
+WORKDIR "/app/CatalogServiceAPI"
+
+
+# Build the application in release mode
+RUN dotnet build "CatalogServiceAPI.csproj" -c Release -o /out
+
+# Publish the application
+RUN dotnet publish "CatalogServiceAPI.csproj" -c Release -o /publish
+
+
+
+# Use a runtime-only image for running the application
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the published files from the build stage
+COPY --from=build /publish .
+
+# Expose the port the application will run on
+EXPOSE 8080
+EXPOSE 443
+
+# Set the entry point for the container
+ENTRYPOINT ["dotnet", "CatalogServiceAPI.dll"]
+

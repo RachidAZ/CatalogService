@@ -1,4 +1,17 @@
 services:
+
+  web:
+    build: .
+    container_name: 'webapi'
+    environment:
+      - ConnectionStrings__CatalogConnectionString=Server=sqldb;Initial Catalog=CatalogDB;TrustServerCertificate=true;User ID=sa;Password=Password123!
+    depends_on:
+      - sqldb
+    ports:
+      - "8080:8080"
+
+
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
